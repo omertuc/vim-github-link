@@ -76,13 +76,17 @@ endfunction
 
 function! s:get_repo_url_from_https_protocol(uri)
     let s:matches = matchlist(a:uri, '^https:\/\/\(.*@\)\?\(.*\)$')
-    return "https://" . s:trim_git_suffix(s:matches[2])
+    return "https://" . s:trim_git_suffix(s:trim_trailing_slash(s:matches[2]))
 endfunction
 
 function! s:trim_git_suffix(str)
     " strip whitespace such as trailing \r from git command output
     let s:nospace = substitute(a:str, '[[:space:]]', '', 'g')
     return substitute(s:nospace, '\.git$', '', '')
+endfunction
+
+function! s:trim_trailing_slash(str)
+    return substitute(a:str, '\/$', '', '')
 endfunction
 
 " copied from tpope/vim-unimpaired
